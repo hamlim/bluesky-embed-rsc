@@ -99,6 +99,29 @@ type BlueskyPost = {
   record: {
     text: string;
     createdAt: string;
+    facets?: Array<
+      | {
+          features: Array<{
+            $type: "app.bsky.richtext.facet#link";
+            uri: string;
+          }>;
+          index: {
+            byteEnd: number;
+            byteStart: number;
+          };
+        }
+      | {
+          $type: "app.bsky.richtext.facet";
+          features: Array<{
+            $type: "app.bsky.richtext.facet#mention";
+            did: string;
+          }>;
+          index: {
+            byteEnd: number;
+            byteStart: number;
+          };
+        }
+    >;
   };
   // @TODO: Are there other embed types?
   embed?:
@@ -181,11 +204,26 @@ async function Post(
       idx++;
       if (segment.isLink()) {
         let uri = segment.link?.uri;
-        if (uri?.endsWith("..")) {
-          // try best guess uri with embed
-          // bluesky truncates the URL within the post text it seems
-          if (post.embed?.$type === "app.bsky.embed.external#view") {
-            uri = post.embed.external.uri;
+        if (typeof uri === "string" && uri?.endsWith("..")) {
+          uri = uri.slice(0, -2);
+          // bluesky truncates the previewed link text - which somehow also breaks the RichTextSegment's uri property
+          // so we instead try and find this link in the post.record.facets array
+          // which seems to contain the full url
+          // @TODO: this feels like a bug in RichText ???
+          if (post.record.facets) {
+            for (let facet of post.record.facets) {
+              for (let feature of facet.features) {
+                if ("uri" in feature && feature.uri.startsWith(uri)) {
+                  uri = feature.uri;
+                  break;
+                }
+              }
+            }
+          } else {
+            // try best guess uri with embed
+            if (post.embed?.$type === "app.bsky.embed.external#view") {
+              uri = post.embed.external.uri;
+            }
           }
         }
         content.push(

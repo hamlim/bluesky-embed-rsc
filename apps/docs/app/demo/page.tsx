@@ -30,8 +30,8 @@ updateBlueskyEmbedConfig({
 export default function DemoPage() {
   return (
     <main>
-      <section id="#5">
-        <h2>Line Breaks</h2>
+      <details id="#5">
+        <summary>Line Breaks</summary>
         {/* @ts-expect-error: RSC */}
         <BlueskyPost
           mode="debug"
@@ -87,9 +87,9 @@ export default function DemoPage() {
             </a>
           </blockquote>
         </BlueskyPost>
-      </section>
-      <section id="external-embed">
-        <h2>External Embed</h2>
+      </details>
+      <details id="external-embed">
+        <summary>External Embed</summary>
         {/* @ts-expect-error: RSC */}
         <BlueskyPost
           mode="debug"
@@ -145,7 +145,65 @@ export default function DemoPage() {
             </a>
           </blockquote>
         </BlueskyPost>
-      </section>
+      </details>
+      <details id="#7">
+        <summary>Link Truncation</summary>
+        {/* @ts-expect-error: RSC */}
+        <BlueskyPost
+          mode="debug"
+          src="https://bsky.app/profile/ped.ro/post/3laozswp32s22"
+        >
+          <blockquote
+            className="bluesky-embed"
+            data-bluesky-uri="at://did:plc:iajrasi3btaj5j4fidztqmao/app.bsky.feed.post/3laozswp32s22"
+            data-bluesky-cid="bafyreidprdjm4rx4iobfcqx572pckpsxejegkfres3lbmtnsbcrpwg2fw4"
+          >
+            <p lang="en">
+              bluesky extension for @raycast.com
+              \n\nwww.raycast.com/dharamkapila...
+              <br />
+              <br />
+              <a href="https://bsky.app/profile/did:plc:iajrasi3btaj5j4fidztqmao/post/3laozswp32s22?ref_src=embed">
+                [image or embed]
+              </a>
+            </p>
+            &mdash; Pedro Duarte (
+            <a href="https://bsky.app/profile/did:plc:iajrasi3btaj5j4fidztqmao?ref_src=embed">
+              @ped.ro
+            </a>
+            ){" "}
+            <a href="https://bsky.app/profile/did:plc:iajrasi3btaj5j4fidztqmao/post/3laozswp32s22?ref_src=embed">
+              November 11, 2024 at 2:17 PM
+            </a>
+          </blockquote>
+        </BlueskyPost>
+        {/* @ts-expect-error: RSC */}
+        <BlueskyPost src="https://bsky.app/profile/ped.ro/post/3laozswp32s22">
+          <blockquote
+            className="bluesky-embed"
+            data-bluesky-uri="at://did:plc:iajrasi3btaj5j4fidztqmao/app.bsky.feed.post/3laozswp32s22"
+            data-bluesky-cid="bafyreidprdjm4rx4iobfcqx572pckpsxejegkfres3lbmtnsbcrpwg2fw4"
+          >
+            <p lang="en">
+              bluesky extension for @raycast.com
+              \n\nwww.raycast.com/dharamkapila...
+              <br />
+              <br />
+              <a href="https://bsky.app/profile/did:plc:iajrasi3btaj5j4fidztqmao/post/3laozswp32s22?ref_src=embed">
+                [image or embed]
+              </a>
+            </p>
+            &mdash; Pedro Duarte (
+            <a href="https://bsky.app/profile/did:plc:iajrasi3btaj5j4fidztqmao?ref_src=embed">
+              @ped.ro
+            </a>
+            ){" "}
+            <a href="https://bsky.app/profile/did:plc:iajrasi3btaj5j4fidztqmao/post/3laozswp32s22?ref_src=embed">
+              November 11, 2024 at 2:17 PM
+            </a>
+          </blockquote>
+        </BlueskyPost>
+      </details>
     </main>
   );
 }
