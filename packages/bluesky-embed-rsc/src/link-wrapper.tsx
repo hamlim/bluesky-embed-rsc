@@ -41,3 +41,46 @@ export function LinkWrapper({
     </Tag>
   );
 }
+
+export function EmbeddedAnchor({
+  href,
+  children,
+  ...props
+}: {
+  href?: string;
+  children: ReactNode;
+  className?: string;
+}): ReactNode {
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement>): void {
+    if (!href) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    // @ts-expect-error: DOM
+    window.open(href, "_blank");
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLAnchorElement>): void {
+    if (!href) {
+      return;
+    }
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+      // @ts-expect-error: DOM
+      window.open(href, "_blank");
+    }
+  }
+
+  return (
+    <a
+      {...props}
+      href={href}
+      onClickCapture={handleClick}
+      onKeyDownCapture={handleKeyDown}
+    >
+      {children}
+    </a>
+  );
+}

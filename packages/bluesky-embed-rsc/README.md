@@ -50,3 +50,12 @@ This library uses Bun for running unit tests, run `bun run test` from the root o
 ### Publishing:
 
 To publish the library, run `bun run pub` from the workspace root. This will prompt you to login to npm and publish the package.
+
+## Inspiration:
+
+This package is heavily inspired by the following projects:
+
+- [`bluesky-embed`](https://github.com/mary-ext/bluesky-embed)
+- [`bsky-react-post`](https://bsky-react-post.rhinobase.io/)
+
+If this package doesn't fit your needs, I'd highly recommend one of the above instead!

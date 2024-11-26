@@ -1,8 +1,10 @@
 {
   "name": "@hamstack/bluesky-embed-rsc",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A React Server Component for embedding Bluesky posts.",
   "homepage": "https://bluesky-embed-rsc.vercel.app",
+  "license": "MIT",
+  "keywords": ["bluesky", "react", "react server components", "embed"],
   "author": {
     "name": "Matt Hamlin",
     "email": "matthewjameshamlin@gmail.com"
@@ -38,7 +40,8 @@
     "@atproto/api": "^0.13.18",
     "date-fns": "^4.1.0",
     "next": "*",
-    "lucide-react": "^0.461.0"
+    "lucide-react": "^0.461.0",
+    "react": "*"
   },
   "scripts": {
     "dev": "node --watch-path=./src dev.mjs",

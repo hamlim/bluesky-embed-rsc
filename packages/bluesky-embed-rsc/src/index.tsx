@@ -3,7 +3,8 @@ import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { Heart, Link, MessageCircle, Quote, Repeat } from "lucide-react";
 import NextImage from "next/image";
 import type { ComponentType, ReactNode } from "react";
-import { LinkWrapper } from "./link-wrapper";
+import { Fragment, cache } from "react";
+import { EmbeddedAnchor, LinkWrapper } from "./link-wrapper";
 
 export type ImageProps = {
   src: string;
@@ -148,6 +149,8 @@ async function getProfileAndPost(
   return { post: json.posts[0], profile };
 }
 
+let cachedGetProfileAndPost = cache(getProfileAndPost);
+
 async function Post(
   props:
     | {
@@ -177,27 +180,57 @@ async function Post(
     for (let segment of richText.segments()) {
       idx++;
       if (segment.isLink()) {
+        let uri = segment.link?.uri;
+        if (uri?.endsWith("..")) {
+          // try best guess uri with embed
+          // bluesky truncates the URL within the post text it seems
+          if (post.embed?.$type === "app.bsky.embed.external#view") {
+            uri = post.embed.external.uri;
+          }
+        }
         content.push(
-          <a
-            key={idx}
-            href={segment.link?.uri}
+          <EmbeddedAnchor
+            key={idx + segment.text}
+            href={uri}
             className="text-blue-500 hover:underline"
           >
             {segment.text}
-          </a>,
+          </EmbeddedAnchor>,
         );
       } else if (segment.isMention()) {
         content.push(
-          <a
-            key={idx}
+          <EmbeddedAnchor
+            key={idx + segment.text}
             href={`https://bsky.app/profile/${segment.mention?.did}`}
             className="text-blue-500 hover:underline"
           >
             {segment.text}
-          </a>,
+          </EmbeddedAnchor>,
+        );
+      } else if (segment.isTag()) {
+        content.push(
+          <EmbeddedAnchor
+            key={idx + segment.text}
+            href={`https://bsky.app/hashtag/${segment.tag?.tag}`}
+            className="text-blue-500 hover:underline"
+          >
+            {segment.text}
+          </EmbeddedAnchor>,
         );
       } else {
-        content.push(<span key={idx}>{segment.text}</span>);
+        if (segment.text.includes("\n")) {
+          let parts = segment.text.split("\n");
+          content.push(
+            ...parts.map((line, index) => (
+              <Fragment key={index + idx + line}>
+                <span>{line}</span>
+                {index < parts.length - 1 && <br />}
+              </Fragment>
+            )),
+          );
+        } else {
+          content.push(<span key={idx + segment.text}>{segment.text}</span>);
+        }
       }
     }
 
@@ -206,11 +239,11 @@ async function Post(
     if (post.embed?.$type === "app.bsky.embed.external#view") {
       const { external } = post.embed;
       embeds.push(
-        <LinkWrapper
-          element="div"
+        <EmbeddedAnchor
           href={external.uri}
+          data-embedded-link
           key="external-embed"
-          className="mt-2 border rounded-lg overflow-hidden cursor-pointer"
+          className="mt-2 border rounded-lg overflow-hidden cursor-pointer block"
         >
           {external.thumb && (
             <div className="relative h-40 bg-gray-100 dark:bg-gray-900">
@@ -236,19 +269,33 @@ async function Post(
               <span className="truncate">{external.uri}</span>
             </div>
           </div>
-        </LinkWrapper>,
+        </EmbeddedAnchor>,
       );
     } else if (post.embed?.$type === "app.bsky.embed.images#view") {
+      let colClasses = "grid-cols-2";
+      let imageProps: Partial<ImageProps> = {
+        width: 300,
+        height: 300,
+      };
+      if (post.embed.images.length === 1) {
+        colClasses = "grid-cols-1 h-[15rem]";
+        imageProps = {
+          fill: true,
+          className: "object-cover",
+        };
+      }
       embeds.push(
-        <div key="embed-images" className="mt-2 grid grid-cols-2 gap-2">
+        <div
+          key="embed-images"
+          className={`relative mt-2 grid ${colClasses} gap-2`}
+        >
           {post.embed.images.map((image) => (
             <Image
               key={image.thumb}
               src={image.thumb}
               alt={image.alt || ""}
-              width={300}
-              height={300}
-              className="rounded-lg"
+              {...imageProps}
+              className={cn(imageProps.className, "rounded-lg")}
             />
           ))}
         </div>,
@@ -343,7 +390,7 @@ export async function BlueskyPost({
   className?: string;
 }): Promise<ReactNode> {
   try {
-    let { post, profile } = await getProfileAndPost(src);
+    let { post, profile } = await cachedGetProfileAndPost(src);
     if (mode === "debug") {
       return <pre>{JSON.stringify({ profile, post }, null, 2)}</pre>;
     }
