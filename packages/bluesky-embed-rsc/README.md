@@ -1,14 +1,29 @@
-# `pkg-a`
+# `@hamstack/bluesky-embed-rsc`
 
-TODO
+Embed Bluesky posts in your app, with graceful fallbacks!
 
 ## Getting Started:
 
 ```bash
-bun add pkg-a
+# Install the library and it's peer dependencies
+bun install @hamstack/bluesky-embed-rsc \
+  @atproto/api \
+  date-fns \
+  lucide-react
 ```
 
-...
+## Usage:
+
+```tsx
+import { BlueskyPost } from '@hamstack/bluesky-embed-rsc';
+
+<BlueskyPost src="">
+  Optional fallback here!
+</BlueskyPost>
+```
+
+See [the docs](https://bluesky-embed-rsc.vercel.app/) for more details!
+
 
 ## Contributing:
 
@@ -35,5 +50,3 @@ This library uses Bun for running unit tests, run `bun run test` from the root o
 ### Publishing:
 
 To publish the library, run `bun run pub` from the workspace root. This will prompt you to login to npm and publish the package.
-
-> Note: In the future, we will automate this process using GitHub Actions. And also add in tooling to manage releases / changelogs!

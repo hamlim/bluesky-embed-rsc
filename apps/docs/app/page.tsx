@@ -1,113 +1,369 @@
-import Image from "next/image";
+import {
+  BlueskyPost,
+  type ImageProps,
+  config as blueskyEmbedConfig,
+  updateConfig as updateBlueskyEmbedConfig,
+} from "@hamstack/bluesky-embed-rsc";
+import {
+  Code,
+  type CodeProps,
+  updateConfig as updateKanapaConfig,
+} from "kanapa";
+import { StarIcon, Terminal } from "lucide-react";
+import {
+  H1,
+  H2,
+  InlineCode,
+  Link,
+  P,
+  UnorderedList,
+} from "~/components/typography";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { Button } from "~/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+
+let fillClasses =
+  "absolute h-full w-full left-0 top-0 right-0 bottom-0 color-transparent";
+
+function cn(...classes: Array<string | undefined | null | boolean>): string {
+  return classes.filter(Boolean).join(" ");
+}
+
+function LocalImage({ fill, ...props }: ImageProps) {
+  // biome-ignore lint/a11y/useAltText: <explanation>
+  return (
+    <img {...props} className={cn(fill && fillClasses, props.className)} />
+  );
+}
+
+updateBlueskyEmbedConfig({
+  ...blueskyEmbedConfig,
+  components: {
+    Image: LocalImage,
+  },
+  rootClassName: "my-2 mx-auto",
+});
+
+updateKanapaConfig({
+  themes: {
+    dark: "github-dark",
+    light: "github-light",
+  },
+  selectors: {
+    light: "html.light",
+    dark: "html.dark",
+  },
+});
+
+function CodeBlock(props: CodeProps) {
+  return (
+    <Code
+      {...props}
+      className="[&>pre]:p-4 [&>pre]:rounded-md [&>pre]:overflow-auto my-2"
+    />
+  );
+}
+
+let sectionClasses =
+  "py-10 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-14 max-w-[75ch] mx-auto min-h-[40vh] flex flex-col justify-center";
+
+export default async function Home() {
+  return (
+    <main>
+      <header className={sectionClasses}>
+        <H1>Bluesky Embed RSC</H1>
+        <P>Embed Bluesky posts in your app, with graceful fallbacks!</P>
+
+        {/* @ts-expect-error: RSC */}
+        <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3layiwns2kk2h">
+          <blockquote
+            className="bluesky-embed"
+            data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3layiwns2kk2h"
+            data-bluesky-cid="bafyreicwe6ad5detejagfiho46jcdmaw7hgw5y4amylcihlw36bbn7gk7i"
+          >
+            <p lang="en">
+              Beer and a fish finger sandwich with chips 🙌<br />
+              <br />
+              <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3layiwns2kk2h?ref_src=embed">
+                [image or embed]
+              </a>
+            </p>
+            &mdash; Matt Hamlin (
+            <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh?ref_src=embed">
+              @matthamlin.me
+            </a>
+            ){" "}
+            <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3layiwns2kk2h?ref_src=embed">
+              November 15, 2024 at 8:41 AM
+            </a>
+          </blockquote>
+        </BlueskyPost>
+
+        <div className="pt-10 flex row justify-evenly items-center">
+          <Button asChild>
+            <a href="#installation">Get Started</a>
+          </Button>
+          <Button variant="outline" asChild>
+            <a href="https://github.com/hamlim/bluesky-embed-rsc">
+              <StarIcon className="mr-2 inline-flex" /> Star on GitHub
+            </a>
+          </Button>
+        </div>
+      </header>
+      <section id="installation" className={sectionClasses}>
+        <H2>Installation</H2>
+        <P>
+          Install <InlineCode>@hamstack/bluesky-embed-rsc</InlineCode> via your
+          favorite package manager:
+        </P>
+        <div className="mt-6">
+          <Tabs defaultValue="bun">
+            <TabsList>
+              <TabsTrigger value="bun">Bun</TabsTrigger>
+              <TabsTrigger value="yarn">Yarn</TabsTrigger>
+              <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+              <TabsTrigger value="npm">npm</TabsTrigger>
+            </TabsList>
+            <div className="my-10">
+              <TabsContent value="bun">
+                <CodeBlock lang="shell">{`
+# Install the library and it's peer dependencies
+bun install @hamstack/bluesky-embed-rsc \\
+  @atproto/api \\
+  date-fns \\
+  lucide-react
+                `}</CodeBlock>
+              </TabsContent>
+              <TabsContent value="yarn">
+                <CodeBlock lang="shell">{`
+# Install the library and it's peer dependencies
+yarn add @hamstack/bluesky-embed-rsc \\
+  @atproto/api \\
+  date-fns \\
+  lucide-react
+                `}</CodeBlock>
+              </TabsContent>
+              <TabsContent value="pnpm">
+                <CodeBlock lang="shell">{`
+# Install the library and it's peer dependencies
+pnpm install @hamstack/bluesky-embed-rsc \\
+  @atproto/api \\
+  date-fns \\
+  lucide-react
+                `}</CodeBlock>
+              </TabsContent>
+              <TabsContent value="npm">
+                <CodeBlock lang="shell">{`
+# Install the library and it's peer dependencies
+npm install @hamstack/bluesky-embed-rsc \\
+  @atproto/api \\
+  date-fns \\
+  lucide-react
+                `}</CodeBlock>
+              </TabsContent>
+            </div>
+          </Tabs>
+        </div>
+      </section>
+      <section id="usage" className={sectionClasses}>
+        <H2>Usage:</H2>
+        <P>Here&apos;s an example of how to set this up with Next.js:</P>
+        <CodeBlock lang="tsx">{`import { BlueskyPost } from "@hamstack/bluesky-embed-rsc";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3layiwns2kk2h">
+      This post could not be loaded!
+    </BlueskyPost>
+  );
+}`}</CodeBlock>
+        <Alert>
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Heads up!</AlertTitle>
+          <AlertDescription>
+            You&apos;ll need to also configure <InlineCode>tailwind</InlineCode>{" "}
+            to look at <InlineCode>node_modules</InlineCode> for the default
+            styles to be applied.
+            <CodeBlock lang="ts">{`
+// In your tailwind config file:
+
+content: [
+  "./node_modules/@hamstack/bluesky-embed-rsc/dist/**/*.js",
+]`}</CodeBlock>
+          </AlertDescription>
+        </Alert>
+        <P>
+          The <InlineCode>BlueskyPost</InlineCode> component will render the
+          post, or fallback content if the post can&apos;t be loaded.
+        </P>
+        <P>Here&apos;s what the output looks like: </P>
+        {/* @ts-expect-error: RSC */}
+        <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3layiwns2kk2h">
+          <blockquote
+            className="bluesky-embed"
+            data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3layiwns2kk2h"
+            data-bluesky-cid="bafyreicwe6ad5detejagfiho46jcdmaw7hgw5y4amylcihlw36bbn7gk7i"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+            <p lang="en">
+              Beer and a fish finger sandwich with chips 🙌<br />
+              <br />
+              <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3layiwns2kk2h?ref_src=embed">
+                [image or embed]
+              </a>
+            </p>
+            &mdash; Matt Hamlin (
+            <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh?ref_src=embed">
+              @matthamlin.me
+            </a>
+            ){" "}
+            <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3layiwns2kk2h?ref_src=embed">
+              November 15, 2024 at 8:41 AM
+            </a>
+          </blockquote>
+        </BlueskyPost>
+      </section>
+      <section id="usage" className={sectionClasses}>
+        <H2>Exports:</H2>
+        <P>
+          <InlineCode>@hamstack/bluesky-embed-rsc</InlineCode> provides the
+          following exports:
+        </P>
+        <UnorderedList>
+          <li>
+            <P>
+              <InlineCode>BlueskyPost</InlineCode> - A server component that
+              renders a Bluesky post embed
+            </P>
+            <P>Props:</P>
+            <UnorderedList>
+              <li>
+                <InlineCode>src: string</InlineCode> - The post URL to embed
+                (this should follow the format of" "
+                <InlineCode>{`https://bsky.app/profile/{HANDLE}/post/{POST_ID}`}</InlineCode>
+                )
+              </li>
+              <li>
+                <InlineCode>children?: ReactNode</InlineCode> - The optional
+                fallback content if the post can&apos;t be loaded (this can be
+                something custom - or it can be the embed blockquote from
+                Bluesky)
+              </li>
+            </UnorderedList>
+          </li>
+        </UnorderedList>
+        <P>
+          Additionally, a <InlineCode>updateConfig</InlineCode> function is
+          exported to update the configuration at runtime. This can be useful if
+          you&apos;re rendering the <InlineCode>BlueskyPost</InlineCode>" "
+          component in a different framework than Next.js, or you want to
+          customize the icons!
+        </P>
+        <CodeBlock lang="ts">{`import { updateConfig } from "@hamstack/bluesky-embed-rsc";
+import {
+  HeartIcon,
+  LinkIcon,
+  MessageCircleIcon,
+  QuoteIcon,
+  RepeatIcon,
+} from "your-favorite-icon-library";
+import Image from "your-favorite-image-library";
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+// customize the Image component, or the icons used in the embed
+updateConfig({
+  components: {
+    Image: Image,
+  },
+  icons: {
+    Heart: HeartIcon,
+    Link: LinkIcon,
+    MessageCircle: MessageCircleIcon,
+    Quote: QuoteIcon,
+    Repeat: RepeatIcon,
+  },
+  rootClassName: "my-2 mx-auto",
+});`}</CodeBlock>
+        <P>The default config is:</P>
+        <CodeBlock lang="ts">{`export let config: Config = {
+  components: {
+    Image: NextImage,
+  },
+  icons: {
+    // icons from lucide-react
+    Heart,
+    Link,
+    MessageCircle,
+    Quote,
+    Repeat,
+  },
+  rootClassName: "",
+};`}</CodeBlock>
+      </section>
+      <section id="features" className={sectionClasses}>
+        <H2>Features:</H2>
+        <P>
+          The <InlineCode>BlueskyPost</InlineCode> component is a server
+          component, so it can be used in any React Server Component compatible
+          framework (e.g. Next, Remix, Waku, etc.).
+        </P>
+        <P>
+          The component will render the post, or fallback content (see the{" "}
+          <InlineCode>children</InlineCode> prop) if the post can&apos;t be
+          loaded.
+        </P>
+        <P>
+          Additionally, the component will "expand" (e.g. render inline
+          previews) post embeds, currently limited to images and external links!
+        </P>
+        <P>
+          Here&apos;s an example post that shows an embedded preview to another
+          website:
+        </P>
+        {/* @ts-expect-error: RSC */}
+        <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3lbsa7kpbf227">
+          <blockquote
+            className="bluesky-embed"
+            data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3lbsa7kpbf227"
+            data-bluesky-cid="bafyreif7muzg5ydifwmcaz5dtjyxr4v63svrlzqn5vb624pueqy6gl2st4"
+          >
+            <p lang="en">
+              Finally got around to writing another (short) blog post! Bluesky
+              Tips and Tools: matthamlin.me/blog/2024/no...
+              <br />
+              <br />
+              <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3lbsa7kpbf227?ref_src=embed">
+                [image or embed]
+              </a>
+            </p>
+            &mdash; Matt Hamlin (
+            <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh?ref_src=embed">
+              @matthamlin.me
+            </a>
+            ){" "}
+            <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3lbsa7kpbf227?ref_src=embed">
+              November 25, 2024 at 2:14 PM
+            </a>
+          </blockquote>
+        </BlueskyPost>
+      </section>
+      <footer className={sectionClasses}>
+        <P>
+          The source code for the library is available on{" "}
+          <Link href="https://github.com/hamlim/bluesky-embed-rsc">GitHub</Link>
+          . If you run into any bugs, please report them via{" "}
+          <Link href="https://github.com/hamlim/bluesky-embed-rsc/issues/new">
+            issues
+          </Link>
+          .
+        </P>
+        <P>
+          If you&apos;d like to discuss changes to the project, feel free to
+          start a{" "}
+          <Link href="https://github.com/hamlim/bluesky-embed-rsc/discussions/new/choose">
+            discussion
+          </Link>
+          !
+        </P>
+      </footer>
     </main>
   );
 }
