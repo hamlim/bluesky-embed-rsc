@@ -75,16 +75,19 @@ export default async function Home() {
         <P>Embed Bluesky posts in your app, with graceful fallbacks!</P>
 
         {/* @ts-expect-error: RSC */}
-        <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3layiwns2kk2h">
+        <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3lbsqkauk5s2d">
           <blockquote
             className="bluesky-embed"
-            data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3layiwns2kk2h"
-            data-bluesky-cid="bafyreicwe6ad5detejagfiho46jcdmaw7hgw5y4amylcihlw36bbn7gk7i"
+            data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3lbsqkauk5s2d"
+            data-bluesky-cid="bafyreie6hfknj36ufbflaqtrsxwyr7sz2a7a42i7fi4tpqgydl5ewg76bq"
           >
             <p lang="en">
-              Beer and a fish finger sandwich with chips 🙌<br />
+              New package alert 🚨 `@hamstack/bluesky-embed-rsc` A React Server
+              Component for embedding @bsky.app posts!
+              bluesky-embed-rsc.vercel.app
               <br />
-              <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3layiwns2kk2h?ref_src=embed">
+              <br />
+              <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3lbsqkauk5s2d?ref_src=embed">
                 [image or embed]
               </a>
             </p>
@@ -93,8 +96,8 @@ export default async function Home() {
               @matthamlin.me
             </a>
             ){" "}
-            <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3layiwns2kk2h?ref_src=embed">
-              November 15, 2024 at 8:41 AM
+            <a href="https://bsky.app/profile/did:plc:j73k5g4hr6qpkgwoalm3cfkh/post/3lbsqkauk5s2d?ref_src=embed">
+              November 25, 2024 at 7:06 PM
             </a>
           </blockquote>
         </BlueskyPost>
