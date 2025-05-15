@@ -7,19 +7,25 @@ Embed Bluesky posts in your app, with graceful fallbacks!
 ```bash
 # Install the library and it's peer dependencies
 bun install @hamstack/bluesky-embed-rsc \
-  @atproto/api \
-  date-fns \
+  @atcute/bluesky \
+  @atcute/lexicons \
+  @atcute/client \
+  @atcute/bluesky-richtext-segmenter \
+  hls.js \
+  @radix-ui/react-aspect-ratio \
+  clsx \
+  tailwind-merge \
   lucide-react
 ```
 
 ## Usage:
 
 ```tsx
-import { BlueskyPost } from '@hamstack/bluesky-embed-rsc';
+import { BlueskyPostEmbed } from '@hamstack/bluesky-embed-rsc';
 
-<BlueskyPost src="">
+<BlueskyPostEmbed src="<link-to-post-here>">
   Optional fallback here!
-</BlueskyPost>
+</BlueskyPostEmbed>
 ```
 
 See [the docs](https://bluesky-embed-rsc.vercel.app/) for more details!
