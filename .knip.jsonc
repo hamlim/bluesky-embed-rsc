@@ -6,7 +6,7 @@
     },
     "packages/*": {
       "ignore": ["**/*.test.(ts|tsx|mjs|js)"],
-      "ignoreDependencies": ["@swc/cli", "@swc/core"]
+      "ignoreDependencies": []
     }
   }
 }
