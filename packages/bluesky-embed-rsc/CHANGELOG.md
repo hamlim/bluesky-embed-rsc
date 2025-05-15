@@ -1,5 +1,9 @@
 ### Unreleased:
 
+### [1.0.1] - May 15th, 2025
+
+- Fix: Add extensions on local/relative imports to resolve tailwind import resolution
+
 ### [1.0.0] - May 15th, 2025
 
 First stable release
