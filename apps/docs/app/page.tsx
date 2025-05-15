@@ -96,17 +96,6 @@ export default async function Home() {
         </div>
       </header>
       <section id="installation" className={sectionClasses}>
-        <Alert className="mb-10">
-          <Terminal className="h-4 w-4" />
-          <AlertTitle>Heads up!</AlertTitle>
-          <AlertDescription>
-            You&apos;re looking at the latest docs of the library. If
-            you&apos;re still using the legacy version (e.g. migrated from{" "}
-            <InlineCode>@hamstack/bluesky-embed-rsc@0.1.x</InlineCode>), check
-            out the legacy docs <Link href="/legacy">here</Link>!
-          </AlertDescription>
-        </Alert>
-
         <H2>Installation</H2>
         <P>
           Install <InlineCode>@hamstack/bluesky-embed-rsc</InlineCode> via your

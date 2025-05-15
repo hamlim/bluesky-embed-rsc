@@ -1,5 +1,15 @@
 ### Unreleased:
 
+### [1.0.0] - May 15th, 2025
+
+First stable release
+
+**Changes:**
+
+- Removed `/legacy` exports
+  - To upgrade, first move from `/legacy` to the main exports
+- Removed legacy peerDeps/devDeps
+
 ### [0.2.0] - May 15th, 2025
 
 - **Breaking Changes**:

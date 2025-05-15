@@ -1,29 +1,11 @@
 import {
-  BlueskyPost,
-  type ImageProps,
+  BlueskyPostEmbed,
   config as blueskyEmbedConfig,
   updateConfig as updateBlueskyEmbedConfig,
-} from "@hamstack/bluesky-embed-rsc/legacy";
-
-let fillClasses =
-  "absolute h-full w-full left-0 top-0 right-0 bottom-0 color-transparent";
-
-function cn(...classes: Array<string | undefined | null | boolean>): string {
-  return classes.filter(Boolean).join(" ");
-}
-
-function LocalImage({ fill, ...props }: ImageProps) {
-  // biome-ignore lint/a11y/useAltText: <explanation>
-  return (
-    <img {...props} className={cn(fill && fillClasses, props.className)} />
-  );
-}
+} from "@hamstack/bluesky-embed-rsc";
 
 updateBlueskyEmbedConfig({
   ...blueskyEmbedConfig,
-  components: {
-    Image: LocalImage,
-  },
   rootClassName: "my-2 mx-auto",
 });
 
@@ -33,10 +15,7 @@ export default function DemoPage() {
       <details id="#5">
         <summary>Line Breaks</summary>
         {/* @ts-expect-error: RSC */}
-        <BlueskyPost
-          mode="debug"
-          src="https://bsky.app/profile/robertlin.bsky.social/post/3l7wpu4rrha2q"
-        >
+        <BlueskyPostEmbed src="https://bsky.app/profile/robertlin.bsky.social/post/3l7wpu4rrha2q">
           <blockquote
             className="bluesky-embed"
             data-bluesky-uri="at://did:plc:5wlpm2j3d6can6quf5hotdcc/app.bsky.feed.post/3l7wpu4rrha2q"
@@ -60,9 +39,9 @@ export default function DemoPage() {
               November 1, 2024 at 11:14 PM
             </a>
           </blockquote>
-        </BlueskyPost>
+        </BlueskyPostEmbed>
         {/* @ts-expect-error: RSC */}
-        <BlueskyPost src="https://bsky.app/profile/robertlin.bsky.social/post/3l7wpu4rrha2q">
+        <BlueskyPostEmbed src="https://bsky.app/profile/robertlin.bsky.social/post/3l7wpu4rrha2q">
           <blockquote
             className="bluesky-embed"
             data-bluesky-uri="at://did:plc:5wlpm2j3d6can6quf5hotdcc/app.bsky.feed.post/3l7wpu4rrha2q"
@@ -86,15 +65,12 @@ export default function DemoPage() {
               November 1, 2024 at 11:14 PM
             </a>
           </blockquote>
-        </BlueskyPost>
+        </BlueskyPostEmbed>
       </details>
       <details id="external-embed">
         <summary>External Embed</summary>
         {/* @ts-expect-error: RSC */}
-        <BlueskyPost
-          mode="debug"
-          src="https://bsky.app/profile/matthamlin.me/post/3lbsa7kpbf227"
-        >
+        <BlueskyPostEmbed src="https://bsky.app/profile/matthamlin.me/post/3lbsa7kpbf227">
           <blockquote
             className="bluesky-embed"
             data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3lbsa7kpbf227"
@@ -118,9 +94,9 @@ export default function DemoPage() {
               November 25, 2024 at 2:14 PM
             </a>
           </blockquote>
-        </BlueskyPost>
+        </BlueskyPostEmbed>
         {/* @ts-expect-error: RSC */}
-        <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3lbsa7kpbf227">
+        <BlueskyPostEmbed src="https://bsky.app/profile/matthamlin.me/post/3lbsa7kpbf227">
           <blockquote
             className="bluesky-embed"
             data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3lbsa7kpbf227"
@@ -144,15 +120,12 @@ export default function DemoPage() {
               November 25, 2024 at 2:14 PM
             </a>
           </blockquote>
-        </BlueskyPost>
+        </BlueskyPostEmbed>
       </details>
       <details id="#7">
         <summary>Link Truncation</summary>
-        {/* @ts-expect-error: RSC */}
-        <BlueskyPost
-          mode="debug"
-          src="https://bsky.app/profile/ped.ro/post/3laozswp32s22"
-        >
+        {/* @ts-expect-error - RSC */}
+        <BlueskyPostEmbed src="https://bsky.app/profile/ped.ro/post/3laozswp32s22">
           <blockquote
             className="bluesky-embed"
             data-bluesky-uri="at://did:plc:iajrasi3btaj5j4fidztqmao/app.bsky.feed.post/3laozswp32s22"
@@ -176,9 +149,9 @@ export default function DemoPage() {
               November 11, 2024 at 2:17 PM
             </a>
           </blockquote>
-        </BlueskyPost>
+        </BlueskyPostEmbed>
         {/* @ts-expect-error: RSC */}
-        <BlueskyPost src="https://bsky.app/profile/ped.ro/post/3laozswp32s22">
+        <BlueskyPostEmbed src="https://bsky.app/profile/ped.ro/post/3laozswp32s22">
           <blockquote
             className="bluesky-embed"
             data-bluesky-uri="at://did:plc:iajrasi3btaj5j4fidztqmao/app.bsky.feed.post/3laozswp32s22"
@@ -202,7 +175,7 @@ export default function DemoPage() {
               November 11, 2024 at 2:17 PM
             </a>
           </blockquote>
-        </BlueskyPost>
+        </BlueskyPostEmbed>
       </details>
     </main>
   );
