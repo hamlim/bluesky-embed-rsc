@@ -11,10 +11,11 @@ import { type ActorIdentifier, is } from "@atcute/lexicons";
 import { Heart, LinkIcon, MessageCircle, Quote, Repeat } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
 import { Fragment } from "react";
-import { AspectRatio } from "./aspect-ratio";
-import { cn } from "./cn";
-import { EmbeddedAnchor, LinkWrapper } from "./link-wrapper";
-import { Video } from "./video";
+import { AspectRatio } from "./aspect-ratio.js";
+import { cn } from "./cn.js";
+import { EmbeddedAnchor, LinkWrapper } from "./link-wrapper.js";
+import { Video } from "./video.js";
+
 // side effect import to register bluesky lexicons
 import "@atcute/bluesky";
 

@@ -4,7 +4,7 @@
 import Hls from "hls.js";
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
-import { AspectRatio } from "./aspect-ratio";
+import { AspectRatio } from "./aspect-ratio.js";
 
 export function Video({
   playlist,
