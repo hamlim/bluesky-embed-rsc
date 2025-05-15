@@ -3,7 +3,7 @@ import {
   type ImageProps,
   config as blueskyEmbedConfig,
   updateConfig as updateBlueskyEmbedConfig,
-} from "@hamstack/bluesky-embed-rsc";
+} from "@hamstack/bluesky-embed-rsc/legacy";
 
 let fillClasses =
   "absolute h-full w-full left-0 top-0 right-0 bottom-0 color-transparent";
