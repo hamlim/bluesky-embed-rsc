@@ -15,6 +15,7 @@ export function LinkWrapper({
   function handleClick(event: React.MouseEvent<HTMLAnchorElement>): void {
     event.preventDefault();
     event.stopPropagation();
+    // @ts-expect-error: DOM
     window.open(href, "_blank");
   }
 
@@ -22,6 +23,7 @@ export function LinkWrapper({
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       event.stopPropagation();
+      // @ts-expect-error: DOM
       window.open(href, "_blank");
     }
   }
@@ -55,6 +57,7 @@ export function EmbeddedAnchor({
     }
     event.preventDefault();
     event.stopPropagation();
+    // @ts-expect-error: DOM
     window.open(href, "_blank");
   }
 
@@ -65,6 +68,7 @@ export function EmbeddedAnchor({
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       event.stopPropagation();
+      // @ts-expect-error: DOM
       window.open(href, "_blank");
     }
   }

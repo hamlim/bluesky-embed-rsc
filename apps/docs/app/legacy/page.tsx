@@ -1,8 +1,9 @@
 import {
-  BlueskyPostEmbed,
+  BlueskyPost,
+  type ImageProps,
   config as blueskyEmbedConfig,
   updateConfig as updateBlueskyEmbedConfig,
-} from "@hamstack/bluesky-embed-rsc";
+} from "@hamstack/bluesky-embed-rsc/legacy";
 import {
   Code,
   type CodeProps,
@@ -20,9 +21,22 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { cn } from "~/lib/utils";
+
+let fillClasses =
+  "absolute h-full w-full left-0 top-0 right-0 bottom-0 color-transparent";
+function LocalImage({ fill, ...props }: ImageProps) {
+  return (
+    // biome-ignore lint/a11y/useAltText: <explanation>
+    <img {...props} className={cn(fill && fillClasses, props.className)} />
+  );
+}
 
 updateBlueskyEmbedConfig({
   ...blueskyEmbedConfig,
+  components: {
+    Image: LocalImage,
+  },
   rootClassName: "my-2 mx-auto",
 });
 
@@ -57,7 +71,7 @@ export default async function Home() {
         <P>Embed Bluesky posts in your app, with graceful fallbacks!</P>
 
         {/* @ts-expect-error: RSC */}
-        <BlueskyPostEmbed src="https://bsky.app/profile/matthamlin.me/post/3lbsqkauk5s2d">
+        <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3lbsqkauk5s2d">
           <blockquote
             className="bluesky-embed"
             data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3lbsqkauk5s2d"
@@ -82,7 +96,7 @@ export default async function Home() {
               November 25, 2024 at 7:06 PM
             </a>
           </blockquote>
-        </BlueskyPostEmbed>
+        </BlueskyPost>
 
         <div className="pt-10 flex row justify-evenly items-center">
           <Button asChild>
@@ -96,17 +110,14 @@ export default async function Home() {
         </div>
       </header>
       <section id="installation" className={sectionClasses}>
-        <Alert className="mb-10">
+        <Alert variant="destructive" className="mb-10">
           <Terminal className="h-4 w-4" />
           <AlertTitle>Heads up!</AlertTitle>
           <AlertDescription>
-            You&apos;re looking at the latest docs of the library. If
-            you&apos;re still using the legacy version (e.g. migrated from{" "}
-            <InlineCode>@hamstack/bluesky-embed-rsc@0.1.x</InlineCode>), check
-            out the legacy docs <Link href="/legacy">here</Link>!
+            You&apos;re looking at the legacy docs of the library. Check out the
+            latest version of the library <Link href="/">here</Link>!
           </AlertDescription>
         </Alert>
-
         <H2>Installation</H2>
         <P>
           Install <InlineCode>@hamstack/bluesky-embed-rsc</InlineCode> via your
@@ -123,63 +134,39 @@ export default async function Home() {
             <div className="my-10">
               <TabsContent value="bun">
                 <CodeBlock lang="shell">{`
-# Install the library and it's peer dependencies
-bun install @hamstack/bluesky-embed-rsc \\
-  @atcute/bluesky \\
-  @atcute/lexicons \\
-  @atcute/client \\
-  @atcute/bluesky-richtext-segmenter \\
-  hls.js \\
-  @radix-ui/react-aspect-ratio \\
-  clsx \\
-  tailwind-merge \\
-  lucide-react
-                `}</CodeBlock>
+  # Install the library and it's peer dependencies
+  bun install @hamstack/bluesky-embed-rsc \\
+    @atproto/api \\
+    date-fns \\
+    lucide-react
+                  `}</CodeBlock>
               </TabsContent>
               <TabsContent value="yarn">
                 <CodeBlock lang="shell">{`
-# Install the library and it's peer dependencies
-yarn add @hamstack/bluesky-embed-rsc \\
-  @atcute/bluesky \\
-  @atcute/lexicons \\
-  @atcute/client \\
-  @atcute/bluesky-richtext-segmenter \\
-  hls.js \\
-  @radix-ui/react-aspect-ratio \\
-  clsx \\
-  tailwind-merge \\
-  lucide-react
-                `}</CodeBlock>
+  # Install the library and it's peer dependencies
+  yarn add @hamstack/bluesky-embed-rsc \\
+    @atproto/api \\
+    date-fns \\
+    lucide-react
+                  `}</CodeBlock>
               </TabsContent>
               <TabsContent value="pnpm">
                 <CodeBlock lang="shell">{`
-# Install the library and it's peer dependencies
-pnpm install @hamstack/bluesky-embed-rsc \\
-  @atcute/bluesky \\
-  @atcute/lexicons \\
-  @atcute/client \\
-  @atcute/bluesky-richtext-segmenter \\
-  hls.js \\
-  @radix-ui/react-aspect-ratio \\
-  clsx \\
-  tailwind-merge \\
-  lucide-react
-                `}</CodeBlock>
+  # Install the library and it's peer dependencies
+  pnpm install @hamstack/bluesky-embed-rsc \\
+    @atproto/api \\
+    date-fns \\
+    lucide-react
+                  `}</CodeBlock>
               </TabsContent>
               <TabsContent value="npm">
                 <CodeBlock lang="shell">{`
-# Install the library and it's peer dependencies
-npm install @hamstack/bluesky-embed-rsc \\
-  @atcute/bluesky \\
-  @atcute/lexicons \\
-  @atcute/client \\
-  @atcute/bluesky-richtext-segmenter \\
-  hls.js \\
-  @radix-ui/react-aspect-ratio \\
-  clsx \\
-  tailwind-merge \\
-  lucide-react
-                `}</CodeBlock>
+  # Install the library and it's peer dependencies
+  npm install @hamstack/bluesky-embed-rsc \\
+    @atproto/api \\
+    date-fns \\
+    lucide-react
+                  `}</CodeBlock>
               </TabsContent>
             </div>
           </Tabs>
@@ -188,15 +175,15 @@ npm install @hamstack/bluesky-embed-rsc \\
       <section id="usage" className={sectionClasses}>
         <H2>Usage:</H2>
         <P>Here&apos;s an example of how to set this up with Next.js:</P>
-        <CodeBlock lang="tsx">{`import { BlueskyPostEmbed } from "@hamstack/bluesky-embed-rsc";
-
-export default function Home() {
-  return (
-    <BlueskyPostEmbed src="https://bsky.app/profile/matthamlin.me/post/3layiwns2kk2h">
-      This post could not be loaded!
-    </BlueskyPostEmbed>
-  );
-}`}</CodeBlock>
+        <CodeBlock lang="tsx">{`import { BlueskyPost } from "@hamstack/bluesky-embed-rsc";
+  
+  export default function Home() {
+    return (
+      <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3layiwns2kk2h">
+        This post could not be loaded!
+      </BlueskyPost>
+    );
+  }`}</CodeBlock>
         <Alert>
           <Terminal className="h-4 w-4" />
           <AlertTitle>Heads up!</AlertTitle>
@@ -204,28 +191,21 @@ export default function Home() {
             You&apos;ll need to also configure <InlineCode>tailwind</InlineCode>{" "}
             to look at <InlineCode>node_modules</InlineCode> for the default
             styles to be applied.
-            <P>For Tailwind v3.x:</P>
             <CodeBlock lang="ts">{`
-// In your tailwind config file:
-
-content: [
-  "./node_modules/@hamstack/bluesky-embed-rsc/dist/**/*.js",
-]`}</CodeBlock>
-            <P>For Tailwind v4.x:</P>
-            <CodeBlock lang="css">{`
-/* In your styles.css file: */
-
-@source "./node_modules/@hamstack/bluesky-embed-rsc/dist/**/*.js";
-`}</CodeBlock>
+  // In your tailwind config file:
+  
+  content: [
+    "./node_modules/@hamstack/bluesky-embed-rsc/dist/**/*.js",
+  ]`}</CodeBlock>
           </AlertDescription>
         </Alert>
         <P>
-          The <InlineCode>BlueskyPostEmbed</InlineCode> component will render
-          the post, or fallback content if the post can&apos;t be loaded.
+          The <InlineCode>BlueskyPost</InlineCode> component will render the
+          post, or fallback content if the post can&apos;t be loaded.
         </P>
         <P>Here&apos;s what the output looks like: </P>
         {/* @ts-expect-error: RSC */}
-        <BlueskyPostEmbed src="https://bsky.app/profile/matthamlin.me/post/3layiwns2kk2h">
+        <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3layiwns2kk2h">
           <blockquote
             className="bluesky-embed"
             data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3layiwns2kk2h"
@@ -247,7 +227,7 @@ content: [
               November 15, 2024 at 8:41 AM
             </a>
           </blockquote>
-        </BlueskyPostEmbed>
+        </BlueskyPost>
       </section>
       <section id="usage" className={sectionClasses}>
         <H2>Exports:</H2>
@@ -258,8 +238,8 @@ content: [
         <UnorderedList>
           <li>
             <P>
-              <InlineCode>BlueskyPostEmbed</InlineCode> - A server component
-              that renders a Bluesky post embed
+              <InlineCode>BlueskyPost</InlineCode> - A server component that
+              renders a Bluesky post embed
             </P>
             <P>Props:</P>
             <UnorderedList>
@@ -281,63 +261,56 @@ content: [
         <P>
           Additionally, a <InlineCode>updateConfig</InlineCode> function is
           exported to update the configuration at runtime. This can be useful if
-          you want to customize the various icons or components used inside the
-          embed!
+          you&apos;re rendering the <InlineCode>BlueskyPost</InlineCode>" "
+          component in a different framework than Next.js, or you want to
+          customize the icons!
         </P>
         <CodeBlock lang="ts">{`import { updateConfig } from "@hamstack/bluesky-embed-rsc";
-import {
-  HeartIcon,
-  LinkIcon,
-  MessageCircleIcon,
-  QuoteIcon,
-  RepeatIcon,
-} from "your-favorite-icon-library";
-import Image from "your-favorite-image-library";
-
-// customize the Image component, or the icons used in the embed
-updateConfig({
-  components: {
-    Image: Image,
-    // can also pass:
-    // Video - used for rendering videos
-    // External - used for rendering website previews/embeds
-  },
-  icons: {
-    Heart: HeartIcon,
-    Link: LinkIcon,
-    MessageCircle: MessageCircleIcon,
-    Quote: QuoteIcon,
-    Repeat: RepeatIcon,
-  },
-  // can also pass in \`linkClassName\` to customize the link styles
-  rootClassName: "my-2 mx-auto",
-});`}</CodeBlock>
+  import {
+    HeartIcon,
+    LinkIcon,
+    MessageCircleIcon,
+    QuoteIcon,
+    RepeatIcon,
+  } from "your-favorite-icon-library";
+  import Image from "your-favorite-image-library";
+  
+  // customize the Image component, or the icons used in the embed
+  updateConfig({
+    components: {
+      Image: Image,
+    },
+    icons: {
+      Heart: HeartIcon,
+      Link: LinkIcon,
+      MessageCircle: MessageCircleIcon,
+      Quote: QuoteIcon,
+      Repeat: RepeatIcon,
+    },
+    rootClassName: "my-2 mx-auto",
+  });`}</CodeBlock>
         <P>The default config is:</P>
         <CodeBlock lang="ts">{`export let config: Config = {
-  components: {
-    // Custom Image, Video, and External components
-    Image,
-    Video,
-    External,
-  },
-  icons: {
-    // Icons from lucide-react
-    Heart,
-    Link: LinkIcon,
-    MessageCircle,
-    Quote,
-    Repeat,
-  },
-  linkClassName: "",
-  rootClassName: "",
-};`}</CodeBlock>
+    components: {
+      Image: NextImage,
+    },
+    icons: {
+      // icons from lucide-react
+      Heart,
+      Link,
+      MessageCircle,
+      Quote,
+      Repeat,
+    },
+    rootClassName: "",
+  };`}</CodeBlock>
       </section>
       <section id="features" className={sectionClasses}>
         <H2>Features:</H2>
         <P>
-          The <InlineCode>BlueskyPostEmbed</InlineCode> component is a server
+          The <InlineCode>BlueskyPost</InlineCode> component is a server
           component, so it can be used in any React Server Component compatible
-          framework (e.g. Waku, Parcel, Redwood SDK, Next etc.).
+          framework (e.g. Next, Remix, Waku, etc.).
         </P>
         <P>
           The component will render the post, or fallback content (see the{" "}
@@ -346,15 +319,14 @@ updateConfig({
         </P>
         <P>
           Additionally, the component will "expand" (e.g. render inline
-          previews) post embeds, currently limited to images, videos, and
-          external links!
+          previews) post embeds, currently limited to images and external links!
         </P>
         <P>
           Here&apos;s an example post that shows an embedded preview to another
           website:
         </P>
         {/* @ts-expect-error: RSC */}
-        <BlueskyPostEmbed src="https://bsky.app/profile/matthamlin.me/post/3lbsa7kpbf227">
+        <BlueskyPost src="https://bsky.app/profile/matthamlin.me/post/3lbsa7kpbf227">
           <blockquote
             className="bluesky-embed"
             data-bluesky-uri="at://did:plc:j73k5g4hr6qpkgwoalm3cfkh/app.bsky.feed.post/3lbsa7kpbf227"
@@ -378,7 +350,7 @@ updateConfig({
               November 25, 2024 at 2:14 PM
             </a>
           </blockquote>
-        </BlueskyPostEmbed>
+        </BlueskyPost>
       </section>
       <footer className={sectionClasses}>
         <P>
