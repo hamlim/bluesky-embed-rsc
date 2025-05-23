@@ -381,13 +381,13 @@ export async function BlueskyPostEmbed({
   if (post.embed) {
     if (is(AppBskyEmbedImages.viewSchema, post.embed)) {
       let images = post.embed.images;
-      let colClasses = "grid-cols-2";
+      let wrapperClasses = "grid-cols-2";
       let imageProps: { width: number; height: number; className?: string } = {
         width: 300,
         height: 300,
       };
       if (images.length === 1 && images[0]) {
-        colClasses = "grid-cols-1 h-[15rem]";
+        wrapperClasses = "grid-cols-1";
         imageProps = {
           width: images[0].aspectRatio?.width ?? 16,
           height: images[0].aspectRatio?.height ?? 9,
@@ -396,7 +396,7 @@ export async function BlueskyPostEmbed({
       embeds.push(
         <div
           key={post.embed.images[0].thumb}
-          className={cn(`relative mt-2 grid gap-2`, colClasses)}
+          className={cn(`relative mt-2 grid gap-2`, wrapperClasses)}
         >
           {post.embed.images.map((image) => (
             <config.components.Image

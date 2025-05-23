@@ -1,6 +1,6 @@
 {
   "name": "@hamstack/bluesky-embed-rsc",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A React Server Component for embedding Bluesky posts.",
   "homepage": "https://bluesky-embed-rsc.vercel.app",
   "license": "MIT",

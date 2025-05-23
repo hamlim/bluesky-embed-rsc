@@ -1,5 +1,9 @@
 ### Unreleased:
 
+### [1.0.2] - May 22nd, 2025
+
+- Fix: Prevent image overflow when there's a single image embed
+
 ### [1.0.1] - May 15th, 2025
 
 - Fix: Add extensions on local/relative imports to resolve tailwind import resolution
